@@ -13,8 +13,12 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${ISSUER_URI}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
 springdoc:
   swagger-ui:
     oauth:
       client-id: ${CLIENT_ID}
       client-secret: ${CLIENT_SECRET}
+
