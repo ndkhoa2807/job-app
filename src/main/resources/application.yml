@@ -15,10 +15,13 @@ spring:
           issuer-uri: ${ISSUER_URI}
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
 springdoc:
   swagger-ui:
     oauth:
       client-id: ${CLIENT_ID}
       client-secret: ${CLIENT_SECRET}
 
+logging:
+  level:
+    org.example.jobapp: debug

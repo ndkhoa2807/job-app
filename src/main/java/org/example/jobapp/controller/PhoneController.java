@@ -1,5 +1,6 @@
 package org.example.jobapp.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.example.jobapp.model.Phone;
 import org.example.jobapp.service.PhoneService;
@@ -11,6 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/phone")
+@SecurityRequirement(name = "Keycloak")
 public class PhoneController {
     private final PhoneService phoneService;
 
