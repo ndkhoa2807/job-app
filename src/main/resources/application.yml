@@ -25,3 +25,11 @@ springdoc:
 logging:
   level:
     org.example.jobapp: debug
+
+security:
+  realm: ${REALM}
+  server-url: ${KEYCLOAK_URL}
+  client-id: admin-cli
+  grant-type: password
+  name: ${ADMIN_ID}
+  password: ${ADMIN_PASSWORD}

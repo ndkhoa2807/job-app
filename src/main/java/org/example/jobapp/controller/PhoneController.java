@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.example.jobapp.model.Phone;
 import org.example.jobapp.service.PhoneService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class PhoneController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('admin')")
+//    @PreAuthorize("hasRole('admin')")
     public Phone postPhone(@RequestBody Phone phone) {
         return phoneService.savePhone(phone);
     }
