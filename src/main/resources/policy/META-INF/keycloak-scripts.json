@@ -1,0 +1,9 @@
+{
+    "policies": [
+        {
+            "name": "User Policy",
+            "fileName": "user-policy.js",
+            "description": "User specific access policy"
+        }
+    ]
+}
