@@ -3,7 +3,7 @@
   "auth-server-url": "http://localhost:8080/",
   "resource": "spring-be",
   "credentials": {
-    "secret": "kCMwJU7wUWRc6HmtMRBwPRDLZYWtKtsj"
+    "secret": "ynzBEtUfzVU9DOdBW27WsfppA9IDp2xB"
   },
   "paths": [
     {
