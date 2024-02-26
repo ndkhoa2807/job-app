@@ -1,6 +1,13 @@
 package org.example.jobapp.config;
 
+import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.keycloak.adapters.authorization.integration.jakarta.ServletPolicyEnforcerFilter;
+import org.keycloak.adapters.authorization.spi.ConfigurationResolver;
+import org.keycloak.adapters.authorization.spi.HttpRequest;
+import org.keycloak.representations.adapters.config.PolicyEnforcerConfig;
+import org.keycloak.util.JsonSerialization;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
@@ -11,58 +18,41 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfig {
 
 
-private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**",
-        "/v2/api-docs",
-        "/v3/api-docs",
-        "/v3/api-docs/**",
-        "/swagger-resources",
-        "/swagger-resources/**",
-        "/configuration/ui",
-        "/configuration/security",
-        "/swagger-ui/**",
-        "/webjars/**",
-        "/swagger-ui.html"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
-        http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                    .requestMatchers("/keycloak/**").permitAll()
-                    .anyRequest().authenticated();
-        });
-        http.oauth2ResourceServer(t -> {
-            t.jwt(Customizer.withDefaults());
-        });
+        http.addFilterAfter(createPolicyEnforceFilter(), BearerTokenAuthenticationFilter.class);
         http.sessionManagement(t -> t.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 
-
-
-    @Bean
-    public DefaultMethodSecurityExpressionHandler securityExpressionHandler() {
-        DefaultMethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler =
-                new DefaultMethodSecurityExpressionHandler();
-        defaultMethodSecurityExpressionHandler.setDefaultRolePrefix("");
-        return defaultMethodSecurityExpressionHandler;
+    private ServletPolicyEnforcerFilter createPolicyEnforceFilter() {
+        return new ServletPolicyEnforcerFilter(new ConfigurationResolver() {
+            @Override
+            public PolicyEnforcerConfig resolve(HttpRequest httpRequest) {
+                try {
+                    return JsonSerialization
+                            .readValue(getClass().getResourceAsStream("/policy-enforcer.json"), PolicyEnforcerConfig.class);
+                } catch (IOException e) {
+                    log.error("Error setting policy enforce from file");
+                    throw new RuntimeException();
+                }
+            }
+        });
     }
 
-    @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        grantedAuthoritiesConverter.setAuthorityPrefix(""); // Default SCOPE_
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
-        converter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
-        return converter;
-    }
+
 }

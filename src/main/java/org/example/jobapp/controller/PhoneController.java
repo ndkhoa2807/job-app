@@ -15,13 +15,13 @@ import java.util.List;
 public class PhoneController {
     private final PhoneService phoneService;
 
-    @GetMapping
+    @GetMapping("public/list")
     // public api
     public List<Phone> getAll() {
         return phoneService.listPhone();
     }
 
-    @PostMapping
+    @PostMapping("/create-phone")
 //    @PreAuthorize("hasRole('admin')")
     public Phone postPhone(@RequestBody Phone phone) {
         return phoneService.savePhone(phone);

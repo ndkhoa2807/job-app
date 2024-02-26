@@ -1,0 +1,26 @@
+{
+  "realm": "it-hunt",
+  "auth-server-url": "http://localhost:8080/",
+  "resource": "spring-be",
+  "credentials": {
+    "secret": "kCMwJU7wUWRc6HmtMRBwPRDLZYWtKtsj"
+  },
+  "paths": [
+    {
+      "path": "/v3/api-docs/*",
+      "enforcement-mode": "DISABLED"
+    },
+    {
+      "path": "/swagger-ui/*",
+      "enforcement-mode": "DISABLED"
+    },
+    {
+      "path": "/api/v1/phone/public/list",
+      "enforcement-mode": "DISABLED"
+    },
+    {
+      "path": "/keycloak/*",
+      "enforcement-mode": "ENFORCING"
+    }
+  ]
+}
