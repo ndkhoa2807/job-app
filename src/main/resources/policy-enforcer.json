@@ -3,7 +3,7 @@
   "auth-server-url": "http://localhost:8080/",
   "resource": "spring-be",
   "credentials": {
-    "secret": "ynzBEtUfzVU9DOdBW27WsfppA9IDp2xB"
+    "secret": "kCMwJU7wUWRc6HmtMRBwPRDLZYWtKtsj"
   },
   "paths": [
     {
@@ -21,6 +21,14 @@
     {
       "path": "/keycloak/*",
       "enforcement-mode": "ENFORCING"
+    },
+    {
+      "path" : "/keycloak/users/{userId}",
+      "claim-information-point": {
+        "claims": {
+          "uri_claim" : "{request.uri}"
+        }
+      }
     }
   ]
 }
