@@ -38,4 +38,15 @@ public class GlobalExceptionHandler {
         log.error("Validation error " + e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<?> handleResourceAlreadyExistsException(ResourceAlreadyExistsException e) {
+        CommonResponse<?> response = new CommonResponse<>(
+                false,
+                e.getMessage(),
+                ZonedDateTime.now(),
+                null
+        );
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
 }

@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @SecurityScheme(
 		name = "Keycloak",
-		openIdConnectUrl = "http://localhost:8080/realms/it-hunt/.well-known/openid-configuration",
+		openIdConnectUrl = "http://103.38.236.117:8080/realms/it-hunt/.well-known/openid-configuration",
 		scheme = "bearer",
 		type = SecuritySchemeType.OPENIDCONNECT,
 		in = SecuritySchemeIn.HEADER

@@ -1,9 +1,9 @@
 {
   "realm": "it-hunt",
-  "auth-server-url": "http://localhost:8080/",
+  "auth-server-url": "http://103.38.236.117:8080/",
   "resource": "spring-be",
   "credentials": {
-    "secret": "kCMwJU7wUWRc6HmtMRBwPRDLZYWtKtsj"
+    "secret": "2IPMjFbM1NV6OBmbhVwqlNxFDub8x7Sd"
   },
   "paths": [
     {
@@ -29,6 +29,11 @@
           "uri_claim" : "{request.uri}"
         }
       }
+    },
+    {
+      "path": "/api/v1/auth/register",
+      "enforcement-mode": "DISABLED"
     }
+
   ]
 }

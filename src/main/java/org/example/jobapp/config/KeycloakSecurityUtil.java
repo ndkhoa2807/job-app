@@ -1,10 +1,12 @@
 package org.example.jobapp.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class KeycloakSecurityUtil {
     Keycloak keycloak;
@@ -28,6 +30,7 @@ public class KeycloakSecurityUtil {
     private String password;
 
     public Keycloak getKeycloakInstance() {
+        log.info(clientId);
         if (keycloak == null) {
             keycloak = KeycloakBuilder
                     .builder()

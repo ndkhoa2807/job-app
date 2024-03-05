@@ -31,7 +31,7 @@ public class RoleService {
 
     public Role getRole(String roleName) {
         Keycloak keycloak = keycloakSecurityUtil.getKeycloakInstance();
-        RoleRepresentation roleRepresentation = keycloak.realm(roleName).roles().get(roleName).toRepresentation();
+        RoleRepresentation roleRepresentation = keycloak.realm(realm).roles().get(roleName).toRepresentation();
         return mapRole(roleRepresentation);
     }
 
@@ -47,7 +47,7 @@ public class RoleService {
         keycloak.realm(realm).roles().deleteRole(roleName);
     }
 
-    private Role mapRole(RoleRepresentation roleRepresentation) {
+    public Role mapRole(RoleRepresentation roleRepresentation) {
         Role role = new Role();
         role.setId(roleRepresentation.getId());
         role.setName(roleRepresentation.getName());
@@ -61,6 +61,7 @@ public class RoleService {
         }
         return roles;
     }
+
     private RoleRepresentation mapRoleRep(Role role) {
         RoleRepresentation roleRep = new RoleRepresentation();
         roleRep.setName(role.getName());
