@@ -1,12 +1,12 @@
 package org.example.jobapp.keycloakclient;
 
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.jobapp.config.KeycloakSecurityUtil;
 import org.example.jobapp.dto.User;
 import org.example.jobapp.exception.ResourceAlreadyExistsException;
 import org.keycloak.admin.client.Keycloak;
-import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.common.util.CollectionUtil;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -58,11 +58,6 @@ public class UserService {
         return user;
     }
 
-    public void logout(User user) {
-        UserRepresentation userRepresentation = mapUserRep(user);
-        Keycloak keycloak = keycloakSecurityUtil.getKeycloakInstance();
-        UserResource userResource = keycloak.realm(REALM).users().get(user.getId());
-    }
 
     public User getUser(String id) {
         Keycloak keycloak = keycloakSecurityUtil.getKeycloakInstance();
@@ -72,15 +67,20 @@ public class UserService {
 
     public void deleteUser(String id) {
         Keycloak keycloak = keycloakSecurityUtil.getKeycloakInstance();
-        keycloak.realm(REALM).users().delete(id);
+        try (Response response = keycloak.realm(REALM).users().delete(id)) {
+            if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
+                log.info("Sucessfully delete user");
+            } else {
+                log.error("Failed to delete user");
+            }
+        }
+
     }
 
     private List<User> mapUsers(List<UserRepresentation> userRepresentations) {
         List<User> users = new ArrayList<>();
         if (CollectionUtil.isNotEmpty(userRepresentations)) {
-            userRepresentations.forEach(userRepresentation -> {
-                users.add(mapUser(userRepresentation));
-            });
+            userRepresentations.forEach(userRepresentation -> users.add(mapUser(userRepresentation)));
         }
         return users;
     }
