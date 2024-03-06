@@ -37,3 +37,4 @@ services:
 
 volumes:
   postgres_keycloak_data:
+  infinispan_data:
