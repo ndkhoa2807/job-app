@@ -28,3 +28,5 @@ security:
   grant-type: password
   name: ${ADMIN_ID}
   password: ${ADMIN_PASSWORD}
+  logout-endpoint: ${LOGOUT_ENDPOINT}
+  logout-redirect: ${REDIRECT_URI}

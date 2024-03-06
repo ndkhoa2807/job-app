@@ -31,7 +31,7 @@
       }
     },
     {
-      "path": "/api/v1/auth/register",
+      "path": "/api/v1/auth/*",
       "enforcement-mode": "DISABLED"
     }
 
