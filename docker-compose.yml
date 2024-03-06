@@ -1,19 +1,19 @@
 version: '3.8'
 
 services:
-  keycloak:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    env_file:
-      - keycloak.env
-    ports:
-      - "8080:8080"
-    command:
-      - start-dev
-      - --import-realm
-    depends_on:
-      - postgres_keycloak
+#  keycloak:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    env_file:
+#      - keycloak.env
+#    ports:
+#      - "8080:8080"
+#    command:
+#      - start-dev
+#      - --import-realm
+#    depends_on:
+#      - postgres_keycloak
 
   postgres_keycloak:
     image: postgres:15
@@ -26,7 +26,14 @@ services:
     volumes:
       - postgres_keycloak_data:/var/lib/postgresql/data
 
-
+  infinispan:
+    image: quay.io/infinispan/server:14.0
+    env_file:
+      - infinispan.env
+    ports:
+      - "11222:11222"
+    volumes:
+      - infinispan_data:/opt/infinispan/server/data
 
 volumes:
   postgres_keycloak_data:
